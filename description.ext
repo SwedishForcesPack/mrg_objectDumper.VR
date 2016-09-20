@@ -1,0 +1,8 @@
+onLoadName = "Object Dumper";
+author = "MisterGoodson";
+
+respawn = INSTANT;
+respawnDelay = 3;
+enableDebugConsole = 1;
+
+disabledAI = true;
