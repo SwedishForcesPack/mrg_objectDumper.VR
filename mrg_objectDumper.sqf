@@ -96,6 +96,7 @@ _grp = createGroup CIVILIAN;
 		_grp = createGroup CIVILIAN;
 	};
 
+	diag_log format["Spawning unit: %1", _x];
 	systemChat format["Spawning unit: %1", _x];
 	_unit = _grp createUnit [_x, [_cursorX, _cursorY], [], 0, "NONE"];
 	_unit setBehaviour "CARELESS";
@@ -137,6 +138,7 @@ _cursorY = _cursorY - _spacing; // Carry on from previous position
 		_cursorY = _cursorY - _spacing; // Drop Y pos
 	};
 
+	diag_log format["Spawning object: %1", _x];
 	systemChat format["Spawning object: %1", _x];
 	_veh = createVehicle [_x, [_cursorX, _cursorY], [], 0, "NONE"];
 	curator addCuratorEditableObjects [[_veh], false];
