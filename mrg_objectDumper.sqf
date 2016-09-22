@@ -31,6 +31,7 @@ diag_log "Object Dumper: Started.";
 
 _modPrefixes = _this select 0;
 _scope = _this select 1;
+_crew = _this select 2;
 
 _trimStart = 27; // Trims up to "bin\config.bin/CfgVehicles/"
 _spawnPos = getMarkerPos "spawn";
@@ -144,6 +145,10 @@ _cursorY = _cursorY - _spacing; // Carry on from previous position
 	curator addCuratorEditableObjects [[_veh], false];
 
 	if (!isNull _veh) then {
+		if (_crew > 0) then {
+			createVehicleCrew _veh;
+		};
+		
 		_vehiclesSpawned = _vehiclesSpawned + 1;
 	};
 

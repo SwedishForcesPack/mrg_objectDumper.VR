@@ -10,7 +10,11 @@ if (isServer) then {
 	// 0/1 = Base classes, wrecks, etc.
 	_scope = 2;
 
+	// Spawn vehicles with crew
+	// 0 = Empty vehicles with no crew
+	// 1 = Vehicles with crew
+	_crew = 0;
 
 	// Exec
-	[_modPrefixes, _scope] execVM "mrg_objectDumper.sqf";
+	[_modPrefixes, _scope, _crew] execVM "mrg_objectDumper.sqf";
 };
