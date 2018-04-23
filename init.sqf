@@ -1,9 +1,9 @@
 enableSaving [false, false];
 
 if (isServer) then {
-	// Prefixes used by each mod (e.g. "CUP", "UK3CB", "RHS", etc.)
+	// Mod folder name to spawn
 	// Leave empty to spawn all (incl. vanilla)
-	_modPrefixes = ["sfp"];
+	_modPrefixes = ["@sfp"];
 
 	// Scope search (private = 0, protected = 1, public = 2)
 	// 2 = Editor units (recommended)

@@ -16,7 +16,7 @@
 		Execute script via execVM.
 
 	Parameters:
-		0: Array - Prefixes used by each mod you wish to scan. Provide empty array to scan all (incl. vanilla)
+		0: Array - Mod folder names to spawn. Provide empty array to scan all (incl. vanilla)
 		1: Integer - Scope of objects to search for (private = 0, protected = 1, public = 2)
 					 2 = Editor units (recommended)
 					 0/1 = Base classes, wrecks, etc.
@@ -29,7 +29,7 @@ if (!isServer) exitWith {};
 diag_log "==================================================";
 diag_log "Object Dumper: Started.";
 
-_modPrefixes = _this select 0;
+_mods = _this select 0;
 _scope = _this select 1;
 _crew = _this select 2;
 
@@ -45,28 +45,34 @@ _unitsSpawned = 0;
 _vehiclesSpawned = 0;
 
 // Get all units
-if (count _modPrefixes < 1) then { // Get all vanilla units if no mod prefixes given
+if (count _mods < 1) then { // Get all vanilla units if no mod prefixes given
 	_conditionString = format["((configName _x) isKindOf 'Man') && (getNumber (_x >> 'scope') == %1)", _scope];
 	_configUnits = _conditionString configClasses (configFile >> "CfgVehicles");
 } else {
+	_conditionString = format["((configName _x) isKindOf 'Man') && (getNumber (_x >> 'scope') == %1)", _scope];
+	_units = (_conditionString configClasses (configFile >> "CfgVehicles"));
 	{
-		_conditionString = format["((configName _x) isKindOf 'Man') && (getNumber (_x >> 'scope') == %4) && (([str(_x), %1, %2] call bis_fnc_trimString) == %3)", _trimStart, _trimStart + (count (toArray _x)) - 1, str(_x), _scope];
-		_configUnits = _configUnits + (_conditionString configClasses (configFile >> "CfgVehicles"));
-	} forEach _modPrefixes;
+		if ((toLower (configSourceMod _x)) in _mods) then {
+			_configUnits pushBack _x;
+		};
+	} forEach _units;
 };
 {
 	_unitClassnames pushBack ([format["%1 ", _x], _trimStart, -1] call bis_fnc_trimString); // Get classname only
 } forEach _configUnits;
 
 // Get all objects
-if (count _modPrefixes < 1) then { // Get all vanilla objects if no mod prefixes given
+if (count _mods < 1) then { // Get all vanilla objects if no mod prefixes given
 	_conditionString = format["(!((configName _x) isKindOf 'Man')) && (getNumber (_x >> 'scope') == %1)", _scope];
 	_configVehicles = _conditionString configClasses (configFile >> "CfgVehicles");
 } else {
+	_conditionString = format["(!((configName _x) isKindOf 'Man')) && (getNumber (_x >> 'scope') == %1)", _scope];
+	_vehicles = (_conditionString configClasses (configFile >> "CfgVehicles"));
 	{
-		_conditionString = format["(!((configName _x) isKindOf 'Man')) && (getNumber (_x >> 'scope') == %4) && (([str(_x), %1, %2] call bis_fnc_trimString) == %3)", _trimStart, _trimStart + (count (toArray _x)) - 1, str(_x), _scope];
-		_configVehicles = _configVehicles + (_conditionString configClasses (configFile >> "CfgVehicles"));
-	} forEach _modPrefixes;
+		if ((toLower (configSourceMod _x)) in _mods) then {
+			_configVehicles pushBack _x;
+		};
+	} forEach _vehicles;
 };
 {
 	_vehicleClassnames pushBack ([format["%1 ", _x], _trimStart, -1] call bis_fnc_trimString); // Get classname only
